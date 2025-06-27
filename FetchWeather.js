@@ -5,7 +5,6 @@ async function fetchWeather() {
     daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_hours,cloud_cover_mean",
     current: "temperature_2m,precipitation,cloud_cover",
     timezone: "America/New_York",
-    forecast_days: 7
   });
 
   const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
