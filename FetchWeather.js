@@ -1,17 +1,11 @@
 async function fetchWeather() {
-  // Get today's date and two days ahead
-  const today = new Date();
-  const startDate = today.toISOString().slice(0, 10);
-  const endDate = new Date(today.getTime() + 2 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
-
   const params = new URLSearchParams({
     latitude: 43.7064,
     longitude: -79.3986,
     daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_hours,cloud_cover_mean",
     current: "temperature_2m,precipitation,cloud_cover",
     timezone: "America/New_York",
-    start_date: startDate,
-    end_date: endDate
+    forecast_days: 7
   });
 
   const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
@@ -30,17 +24,17 @@ async function fetchWeather() {
       <p>Cloud Cover: ${current.cloud_cover}%</p>
     `;
 
-    // Format 3-day forecast (today, tomorrow, next day)
+    // Format 3-day forecast (skip the first day, which is usually yesterday)
     const daily = data.daily;
-    const forecastHtml = daily.time.map((time, i) => {
+    const forecastHtml = daily.time.slice(1, 4).map((time, i) => {
       return `
         <div class="day-block">
           <strong>${new Date(time).toDateString()}</strong><br/>
-          Max Temp: ${daily.temperature_2m_max[i]}°C<br/>
-          Min Temp: ${daily.temperature_2m_min[i]}°C<br/>
-          Precip. Probability: ${daily.precipitation_probability_max[i]}%<br/>
-          Precip. Hours: ${daily.precipitation_hours[i]}<br/>
-          Cloud Cover Avg: ${daily.cloud_cover_mean[i]}%
+          Max Temp: ${daily.temperature_2m_max[i + 1]}°C<br/>
+          Min Temp: ${daily.temperature_2m_min[i + 1]}°C<br/>
+          Precip. Probability: ${daily.precipitation_probability_max[i + 1]}%<br/>
+          Precip. Hours: ${daily.precipitation_hours[i + 1]}<br/>
+          Cloud Cover Avg: ${daily.cloud_cover_mean[i + 1]}%
         </div>
       `;
     }).join('');
