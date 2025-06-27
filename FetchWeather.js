@@ -41,7 +41,7 @@ async function fetchWeather() {
     }).join('');
 
     // Inject into page
-    document.getElementById('weather').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + dailyHtml;
+    document.getElementById('forecast').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + dailyHtml;
   } catch (err) {
     console.error("Failed to fetch weather data:", err);
     document.getElementById('weather').innerText = "Error loading weather data.";
