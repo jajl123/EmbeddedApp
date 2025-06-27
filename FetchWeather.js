@@ -13,36 +13,50 @@ async function fetchWeather() {
     const response = await fetch(url);
     const data = await response.json();
 
-    // Current weather
+    // Extract and display current weather
     const current = data.current;
+    const currentTime = new Date(current.time);
     const currentHtml = `
-      <h3>Current Weather</h3>
-      <p>Time: ${current.time}</p>
+      <h3>Current Conditions</h3>
+      <p>Time: ${currentTime.toLocaleString()}</p>
       <p>Temperature: ${current.temperature_2m}°C</p>
       <p>Precipitation: ${current.precipitation} mm</p>
       <p>Cloud Cover: ${current.cloud_cover}%</p>
     `;
 
-    // Daily weather
+    // Extract daily data
     const daily = data.daily;
-    const dailyHtml = daily.time.map((dateStr, i) => {
+    const dailyHtml = daily.time.map((timeStr, i) => {
       return `
         <div class="day-block">
-          <strong>${new Date(dateStr).toDateString()}</strong><br/>
+          <strong>${new Date(timeStr).toDateString()}</strong><br/>
           Max Temp: ${daily.temperature_2m_max[i]}°C<br/>
           Min Temp: ${daily.temperature_2m_min[i]}°C<br/>
-          Precipitation Probability: ${daily.precipitation_probability_max[i]}%<br/>
-          Precipitation Hours: ${daily.precipitation_hours[i]}<br/>
-          Cloud Cover Mean: ${daily.cloud_cover_mean[i]}%
+          Precip. Probability: ${daily.precipitation_probability_max[i]}%<br/>
+          Precip. Hours: ${daily.precipitation_hours[i]}<br/>
+          Cloud Cover: ${daily.cloud_cover_mean[i]}%
         </div>
       `;
     }).join('');
 
-    // Inject into page
+    // Render to page
     document.getElementById('weather').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + dailyHtml;
+
+    // Log to console (optional)
+    for (let i = 0; i < daily.time.length; i++) {
+      console.log(
+        new Date(daily.time[i]).toISOString(),
+        daily.temperature_2m_max[i],
+        daily.temperature_2m_min[i],
+        daily.precipitation_probability_max[i],
+        daily.precipitation_hours[i],
+        daily.cloud_cover_mean[i]
+      );
+    }
+
   } catch (err) {
-    console.error("Failed to fetch weather data:", err);
-    document.getElementById('weather').innerText = "Error loading weather data.";
+    console.error("Weather fetch error:", err);
+    document.getElementById('weather').innerText = "Error fetching weather data.";
   }
 }
 
