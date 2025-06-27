@@ -2,9 +2,10 @@ async function fetchWeather() {
   const params = new URLSearchParams({
     latitude: 43.7064,
     longitude: -79.3986,
-    hourly: "temperature_2m,precipitation_probability,precipitation,cloud_cover",
+    daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_hours,cloud_cover_mean",
+    current: "temperature_2m,precipitation,cloud_cover",
     timezone: "America/New_York",
-    forecast_days: 3,
+    forecast_days: 3
   });
 
   const url = `https://api.open-meteo.com/v1/forecast?${params.toString()}`;
@@ -13,22 +14,35 @@ async function fetchWeather() {
     const response = await fetch(url);
     const data = await response.json();
 
-    const hourly = data.hourly;
-    const output = hourly.time.map((time, i) => {
+    // Format current conditions
+    const current = data.current;
+    const currentHtml = `
+      <h3>Current Conditions</h3>
+      <p>Time: ${current.time}</p>
+      <p>Temperature: ${current.temperature_2m}°C</p>
+      <p>Precipitation: ${current.precipitation}mm</p>
+      <p>Cloud Cover: ${current.cloud_cover}%</p>
+    `;
+
+    // Format 3-day forecast
+    const daily = data.daily;
+    const forecastHtml = daily.time.map((time, i) => {
       return `
-        <p>
-          <strong>${new Date(time).toLocaleString()}</strong><br/>
-          Temp: ${hourly.temperature_2m[i]}°C,
-          Precip: ${hourly.precipitation[i]}mm,
-          Chance: ${hourly.precipitation_probability[i]}%,
-          Clouds: ${hourly.cloud_cover[i]}%
-        </p>`;
+        <div class="day-block">
+          <strong>${new Date(time).toDateString()}</strong><br/>
+          Max Temp: ${daily.temperature_2m_max[i]}°C<br/>
+          Min Temp: ${daily.temperature_2m_min[i]}°C<br/>
+          Precip. Probability: ${daily.precipitation_probability_max[i]}%<br/>
+          Precip. Hours: ${daily.precipitation_hours[i]}<br/>
+          Cloud Cover Avg: ${daily.cloud_cover_mean[i]}%
+        </div>
+      `;
     }).join('');
 
-    document.getElementById('forecast').innerHTML = output;
-  } catch (error) {
-    console.error("Failed to load weather data:", error);
-    document.getElementById('forecast').innerText = "Error loading weather.";
+    document.getElementById('weather').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + forecastHtml;
+  } catch (err) {
+    console.error("Error fetching weather:", err);
+    document.getElementById('weather').innerText = "Failed to load weather data.";
   }
 }
 
