@@ -23,16 +23,18 @@ async function fetchWeather() {
       <p>Cloud Cover: ${current.cloud_cover}%</p>
     `;
 
-    // Find today in the daily.time array
-    const daily = data.daily;
+    // Get today's date string
     const todayStr = new Date().toISOString().slice(0, 10);
-    const todayIdx = daily.time.findIndex(date => date === todayStr);
 
-    // If today is found, get today, tomorrow, next day
+    // Find the first index that is today or later
+    const daily = data.daily;
+    const startIdx = daily.time.findIndex(date => date >= todayStr);
+
+    // Get up to 3 days from today onward
     let daysHtml = '';
-    if (todayIdx !== -1 && todayIdx + 2 < daily.time.length) {
-      daysHtml = daily.time.slice(todayIdx, todayIdx + 3).map((dateStr, i) => {
-        const idx = todayIdx + i;
+    if (startIdx !== -1 && startIdx + 2 < daily.time.length) {
+      daysHtml = daily.time.slice(startIdx, startIdx + 3).map((dateStr, i) => {
+        const idx = startIdx + i;
         return `
           <div class="day-block">
             <strong>${new Date(dateStr).toDateString()}</strong><br/>
