@@ -2,11 +2,24 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Open-Meteo Forecast</title>
+  <title>Weather Forecast</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 1em;
+    }
+    .day-block {
+      margin-bottom: 1em;
+      padding: 0.5em;
+      background: #f0f8ff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-  <h2>3-Day Forecast (Toronto)</h2>
-  <div id="forecast">Loading...</div>
+  <h2>Toronto Weather</h2>
+  <div id="weather">Loading...</div>
 
   <script src="FetchWeather.js"></script>
 </body>
