@@ -23,17 +23,19 @@ async function fetchWeather() {
       <p>Cloud Cover: ${current.cloud_cover}%</p>
     `;
 
-    // Daily weather
+    // Daily weather: show only today, tomorrow, and the next day
     const daily = data.daily;
-    const dailyHtml = daily.time.map((dateStr, i) => {
+    const dailyHtml = daily.time.slice(1, 4).map((dateStr, i) => {
+      // i here is 0,1,2 but refers to index 1,2,3 in the original arrays
+      const idx = i + 1;
       return `
         <div class="day-block">
           <strong>${new Date(dateStr).toDateString()}</strong><br/>
-          Max Temp: ${daily.temperature_2m_max[i]}°C<br/>
-          Min Temp: ${daily.temperature_2m_min[i]}°C<br/>
-          Precipitation Probability: ${daily.precipitation_probability_max[i]}%<br/>
-          Precipitation Hours: ${daily.precipitation_hours[i]}<br/>
-          Cloud Cover Mean: ${daily.cloud_cover_mean[i]}%
+          Max Temp: ${daily.temperature_2m_max[idx]}°C<br/>
+          Min Temp: ${daily.temperature_2m_min[idx]}°C<br/>
+          Precipitation Probability: ${daily.precipitation_probability_max[idx]}%<br/>
+          Precipitation Hours: ${daily.precipitation_hours[idx]}<br/>
+          Cloud Cover Mean: ${daily.cloud_cover_mean[idx]}%
         </div>
       `;
     }).join('');
