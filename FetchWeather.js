@@ -24,17 +24,17 @@ async function fetchWeather() {
       <p>Cloud Cover: ${current.cloud_cover}%</p>
     `;
 
-    // Format 3-day forecast
+    // Format 3-day forecast (skip the first day, which is usually yesterday)
     const daily = data.daily;
-    const forecastHtml = daily.time.map((time, i) => {
+    const forecastHtml = daily.time.slice(1, 4).map((time, i) => {
       return `
         <div class="day-block">
           <strong>${new Date(time).toDateString()}</strong><br/>
-          Max Temp: ${daily.temperature_2m_max[i]}°C<br/>
-          Min Temp: ${daily.temperature_2m_min[i]}°C<br/>
-          Precip. Probability: ${daily.precipitation_probability_max[i]}%<br/>
-          Precip. Hours: ${daily.precipitation_hours[i]}<br/>
-          Cloud Cover Avg: ${daily.cloud_cover_mean[i]}%
+          Max Temp: ${daily.temperature_2m_max[i + 1]}°C<br/>
+          Min Temp: ${daily.temperature_2m_min[i + 1]}°C<br/>
+          Precip. Probability: ${daily.precipitation_probability_max[i + 1]}%<br/>
+          Precip. Hours: ${daily.precipitation_hours[i + 1]}<br/>
+          Cloud Cover Avg: ${daily.cloud_cover_mean[i + 1]}%
         </div>
       `;
     }).join('');
