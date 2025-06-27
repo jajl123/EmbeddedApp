@@ -40,7 +40,7 @@ async function fetchWeather() {
     }).join('');
 
     // Render to page
-    document.getElementById('weather').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + dailyHtml;
+    document.getElementById('weather').innerHTML = currentHtml + "<h3>6-Day Forecast</h3>" + dailyHtml;
 
     // Log to console (optional)
     for (let i = 0; i < daily.time.length; i++) {
