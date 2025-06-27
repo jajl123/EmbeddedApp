@@ -23,28 +23,36 @@ async function fetchWeather() {
       <p>Cloud Cover: ${current.cloud_cover}%</p>
     `;
 
-    // Daily weather: show only today, tomorrow, and the next day
+    // Find today in the daily.time array
     const daily = data.daily;
-    const dailyHtml = daily.time.slice(1, 4).map((dateStr, i) => {
-      // i here is 0,1,2 but refers to index 1,2,3 in the original arrays
-      const idx = i + 1;
-      return `
-        <div class="day-block">
-          <strong>${new Date(dateStr).toDateString()}</strong><br/>
-          Max Temp: ${daily.temperature_2m_max[idx]}°C<br/>
-          Min Temp: ${daily.temperature_2m_min[idx]}°C<br/>
-          Precipitation Probability: ${daily.precipitation_probability_max[idx]}%<br/>
-          Precipitation Hours: ${daily.precipitation_hours[idx]}<br/>
-          Cloud Cover Mean: ${daily.cloud_cover_mean[idx]}%
-        </div>
-      `;
-    }).join('');
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayIdx = daily.time.findIndex(date => date === todayStr);
+
+    // If today is found, get today, tomorrow, next day
+    let daysHtml = '';
+    if (todayIdx !== -1 && todayIdx + 2 < daily.time.length) {
+      daysHtml = daily.time.slice(todayIdx, todayIdx + 3).map((dateStr, i) => {
+        const idx = todayIdx + i;
+        return `
+          <div class="day-block">
+            <strong>${new Date(dateStr).toDateString()}</strong><br/>
+            Max Temp: ${daily.temperature_2m_max[idx]}°C<br/>
+            Min Temp: ${daily.temperature_2m_min[idx]}°C<br/>
+            Precipitation Probability: ${daily.precipitation_probability_max[idx]}%<br/>
+            Precipitation Hours: ${daily.precipitation_hours[idx]}<br/>
+            Cloud Cover Mean: ${daily.cloud_cover_mean[idx]}%
+          </div>
+        `;
+      }).join('');
+    } else {
+      daysHtml = "<p>Could not find 3-day forecast starting from today.</p>";
+    }
 
     // Inject into page
-    document.getElementById('forecast').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + dailyHtml;
+    document.getElementById('forecast').innerHTML = currentHtml + "<h3>3-Day Forecast</h3>" + daysHtml;
   } catch (err) {
     console.error("Failed to fetch weather data:", err);
-    document.getElementById('weather').innerText = "Error loading weather data.";
+    document.getElementById('forecast').innerText = "Error loading weather data.";
   }
 }
 
