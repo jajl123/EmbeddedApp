@@ -1,7 +1,7 @@
 async function fetchWeather() {
   const params = new URLSearchParams({
-    latitude: 43.7064,
-    longitude: -79.3986,
+    latitude: 43.646014,
+    longitude: -79.383420,
     daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_hours,cloud_cover_mean,weather_code",
     current: "temperature_2m,precipitation,cloud_cover,weather_code",
     hourly: "temperature_2m,precipitation_probability,cloud_cover,wind_speed_10m,wind_direction_10m,rain,showers,snowfall,weather_code",
