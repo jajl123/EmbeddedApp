@@ -2,9 +2,9 @@ async function fetchWeather() {
   const params = new URLSearchParams({
     latitude: 39.922177,
     longitude: -87.430714,
-    daily: "temperature_2m_max", "temperature_2m_min", "precipitation_probability_max", "precipitation_hours", "weather_code", "cloud_cover_mean",
-    current: "temperature_2m", "precipitation", "weather_code", "cloud_cover",
-    hourly: "temperature_2m", "precipitation_probability", "cloud_cover", "wind_speed_10m", "wind_direction_10m", "rain", "showers", "snowfall", "weather_code",
+    daily: "temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_hours,weather_code,cloud_cover_mean",
+    current: "temperature_2m,precipitation,weather_code,cloud_cover",
+    hourly: "temperature_2m,precipitation_probability,cloud_cover,wind_speed_10m,wind_direction_10m,rain,showers,snowfall,weather_code",
     timezone: "America/New_York",
 	  wind_speed_unit: "mph",
 	  temperature_unit: "fahrenheit",
