@@ -64,7 +64,7 @@ async function fetchWeather() {
           ${currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
         </span>
         <span style="font-size:2rem; display:block;" title="${currentIconObj.desc}">${currentIconObj.icon}</span>
-        <span style="font-size:1.1rem; display:block;">${current.temperature_2m}°C</span>
+        <span style="font-size:1.1rem; display:block;">${current.temperature_2m}°F</span>
       </div>
     `;
 
@@ -85,7 +85,7 @@ async function fetchWeather() {
           <strong>${new Date(timeStr).toDateString()}</strong><br/>
           <span style="font-size:2rem;" title="${desc}">${icon}</span>
           ${precipHtml}
-          <div style="font-size:1rem;">Low: ${daily.temperature_2m_min[arrIndex]}°C - High: ${daily.temperature_2m_max[arrIndex]}°C</div>
+          <div style="font-size:1rem;">Low: ${daily.temperature_2m_min[arrIndex]}°F - High: ${daily.temperature_2m_max[arrIndex]}°F</div>
         </div>
       `;
     }).join('');
@@ -131,7 +131,7 @@ async function fetchWeather() {
                 ${new Date(hourly.time[i]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
               </span>
               <span style="font-size:2rem; display:block;" title="${desc}">${icon}</span>
-              <span style="font-size:1.1rem; display:block;">${hourly.temperature_2m[i]}°C</span>
+              <span style="font-size:1.1rem; display:block;">${hourly.temperature_2m[i]}°F</span>
             </div>
           `;
         }).join('')}
@@ -149,7 +149,7 @@ async function fetchWeather() {
                 ${new Date(hourly.time[i]).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
               </span>
               <span style="font-size:2rem; display:block;" title="${desc}">${icon}</span>
-              <span style="font-size:1.1rem; display:block;">${hourly.temperature_2m[i]}°C</span>
+              <span style="font-size:1.1rem; display:block;">${hourly.temperature_2m[i]}°F</span>
             </div>
           `;
         }).join('')}
